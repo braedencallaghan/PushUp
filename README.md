@@ -1,2 +1,2 @@
 # PushUp
-HackUMass project
+This will be the description.
