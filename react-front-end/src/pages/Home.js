@@ -4,6 +4,7 @@ import styles from '../styles/componentStyles.module.css';
 
 function Counter() {
     const [count, setCount] = useState(0);
+    const [pushupState, setPushupState] = useState({})
 
     return (
         <div>
@@ -23,6 +24,15 @@ function Counter() {
     );
 }
 
+function State() {
+  const [pushupState, setPushupState] = useState({})
+  
+  return (
+    <div>
+      <h1>State: {pushupState}</h1>
+    </div>
+  );
+}
 
 function Home(){
   const [capturedImage, setCapturedImage] = useState(null);
@@ -32,7 +42,7 @@ function Home(){
   };
 
   async function handleSendToServer() {
-    const res = await fetch('http://localhost:3000/process-image', {
+    const res = await fetch('http://localhost:5000/process-image', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +54,7 @@ function Home(){
   return (
     <div>
       <h1 className={styles['centered-heading']}>PushUp ShowDown</h1>
-      <WebcamComponent onCapture={handleCapture} />
+      <WebcamComponent onCapture={handleCapture} setPushupState={setPushupState} pushupState={pushupState} count={count} setCount={setCount}/>
       {capturedImage && (
         <div>
           <img src={capturedImage} alt="Captured" />
@@ -52,6 +62,7 @@ function Home(){
         </div>
       )}
       <div className={styles['centered-element']}><Counter /></div>
+      <div className={styles['centered-element']}><State/></div>
     </div>
   );
 }
