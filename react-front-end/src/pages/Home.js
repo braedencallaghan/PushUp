@@ -1,31 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import WebcamComponent from '../components/WebcamComponent';
 import styles from '../styles/componentStyles.module.css';
-
-function VideoStream() {
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    async function getMedia() {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          let video = videoRef.current;
-          video.srcObject = stream;
-          await video.play();
-        } catch (err) {
-          console.error("Error accessing the webcam: ", err);
-        }
-      }
-    }
-    getMedia();
-  }, []);
-
-  return (
-    <div>
-      <video ref={videoRef}/>
-    </div>
-  );
-}
 
 function Counter() {
     const [count, setCount] = useState(0);
@@ -48,14 +23,37 @@ function Counter() {
     );
 }
 
-function Home() {
+
+function Home(){
+  const [capturedImage, setCapturedImage] = useState(null);
+
+  const handleCapture = (imageSrc) => {
+    setCapturedImage(imageSrc);
+  };
+
+  async function handleSendToServer() {
+    const res = await fetch('http://localhost:3000/process-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ image: capturedImage }),
+    })
+  };
+
   return (
     <div>
       <h1 className={styles['centered-heading']}>PushUp ShowDown</h1>
-      <div className={styles['video-container']}><VideoStream /></div>
+      <WebcamComponent onCapture={handleCapture} />
+      {capturedImage && (
+        <div>
+          <img src={capturedImage} alt="Captured" />
+          <button onClick={handleSendToServer}>Send to Server</button>
+        </div>
+      )}
       <div className={styles['centered-element']}><Counter /></div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
