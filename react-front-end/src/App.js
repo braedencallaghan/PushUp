@@ -1,43 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+// import About from './pages/About';
+// import Contact from './pages/Contact';
+// import NotFound from './pages/NotFound';
 
-function VideoStream() {
-  const videoRef = useRef(null);
-
-    useEffect(() => {
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    let video = videoRef.current;
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(err => {
-                    console.error("Error accessing the webcam: ", err);
-                });
-        }
-    }, []);
-
-    return (
-        <div>
-            <video ref={videoRef} />
-        </div>
-    );
-}
-
-function Counter() {
+const App = () => {
   return (
-    <h1>counter: 1</h1>
-  )
-}
+    <Router>
+      <div>
+        <Navbar />
 
-function App() {
-  return (
-    <div>
-      <h1>Welcome to my app</h1>
-      <VideoStream />
-      <Counter />
-    </div>
-  )
-}
+        <Switch>
+          <Route path="/" exact component={Home} />
+          {/* <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route component={NotFound} /> */}
+        </Switch>
+      </div>
+    </Router>
+  );
+};
 
-export default App
+export default App;
