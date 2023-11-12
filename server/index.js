@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import {MongoClient} from 'mongodb';
 import imageRouter from './routes/imageRouter.js';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 const app = express();
@@ -31,10 +32,12 @@ async function startServer() {
 startServer();
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 const imageRouter = imageRouter();
 
 app.use('/api/users', imageRouter);
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
