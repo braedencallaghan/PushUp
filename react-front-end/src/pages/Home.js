@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import styles from '../styles/componentStyles.module.css';
 
 function VideoStream() {
   const videoRef = useRef(null);
@@ -26,23 +27,33 @@ function VideoStream() {
   );
 }
 
-
 function Counter() {
-  const [count, setCount] = useState(0);
+    const [count, setCount] = useState(0);
 
-  return (
-    <><h1>counter: {count}</h1><button onClick={() => setCount(count + 1)}>
-      Click me
-    </button></>
-  )
+    return (
+        <div>
+            <h1>counter: {count}</h1>
+            <br />
+            <button
+        style={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          display: 'block',
+        }}
+        onClick={() => setCount(count + 1)}
+      >
+        Click me
+      </button>
+        </div>
+    );
 }
 
 function Home() {
   return (
     <div>
-      <h1>Welcome to my app</h1>
-      <VideoStream />
-      <Counter />
+      <h1 className={styles['centered-heading']}>PushUp ShowDown</h1>
+      <div className={styles['video-container']}><VideoStream /></div>
+      <div className={styles['centered-element']}><Counter /></div>
     </div>
   )
 }
