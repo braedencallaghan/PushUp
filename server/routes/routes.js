@@ -1,6 +1,7 @@
 import express from 'express';
 import "dotenv/config";
 import {MongoClient, ObjectId} from 'mongodb';
+import { spawn } from 'child_process';
 
 const router = express.Router();
 
@@ -9,8 +10,20 @@ const db = client.db('PushUpShowdown');
 
 router.use(express.static("client"));
 
-router.post('/image', async (req, res) => {
+router.post('/process-image', async (req, res) => {
     // Handle POST request to /api/users here
+    const body = req.body;
+    const imageBuffer = Buffer.from(body.image, 'base64');
+
+    const pythonProcess = spawn('python',["../predictor/predictor.py", imageBuffer]);
+
+    pythonProcess.stdout.on('data', async (data) => {
+      res.send(data.toString());
+    })
+
+    pythonProcess.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
 });
 
 router.post('/register', async (req, res) => {
