@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, useRef } from 'react';
+
+function VideoStream() {
+  const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    let video = videoRef.current;
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(err => {
+                    console.error("Error accessing the webcam: ", err);
+                });
+        }
+    }, []);
+
+    return (
+        <div>
+            <video ref={videoRef} />
+        </div>
+    );
+}
+
+function Counter() {
+  return (
+    <h1>counter: 1</h1>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Welcome to my app</h1>
+      <VideoStream />
+      <Counter />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
