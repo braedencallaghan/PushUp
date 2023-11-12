@@ -60,4 +60,11 @@
     height: 10vh; /* Optional: Adjust as needed */
   }
 
+  .centered-element2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3vh; /* Optional: Adjust as needed */
+  }
+
   

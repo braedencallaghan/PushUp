@@ -22,8 +22,8 @@ function LoginPage({ onLogin }) {
       <form onSubmit={handleSubmit} className="login-form">
         <h1 className={styles['centered-heading']}>Login</h1>
         {error && <div className="error-message">{error}</div>}
-        <div className="form-field">
-          <label htmlFor="username">Username</label>
+        <div className={styles['centered-element2']}>
+          <label htmlFor="username">Username:&nbsp;&nbsp;</label>
           <input
             type="text"
             id="username"
@@ -32,8 +32,8 @@ function LoginPage({ onLogin }) {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className="form-field">
-          <label htmlFor="password">Password</label>
+        <div className={styles['centered-element2']}>
+          <label htmlFor="password">Password:&nbsp;&nbsp;</label>
           <input
             type="password"
             id="password"
@@ -42,7 +42,12 @@ function LoginPage({ onLogin }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="login-button">Login</button>
+        <br></br>
+        <button type="submit" style={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          display: 'block',
+        }}>Login</button>
       </form>
     </div>
   );
