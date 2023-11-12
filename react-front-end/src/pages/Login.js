@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../styles/componentStyles.module.css';
 
 function LoginPage({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ function LoginPage({ onLogin }) {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
+        <h1 className={styles['centered-heading']}>Login</h1>
         {error && <div className="error-message">{error}</div>}
         <div className="form-field">
           <label htmlFor="username">Username</label>
