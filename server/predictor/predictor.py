@@ -3,7 +3,11 @@ import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 import cv2
 import sys
+import base64
 import numpy as np
+from io import BytesIO
+from PIL import Image
+import os
 
 def get_object_detection_model(num_classes):
 
@@ -18,16 +22,22 @@ def get_object_detection_model(num_classes):
     return model
 
 imageBuffer = sys.argv[1]
-img = cv2.imdecode(np.frombuffer(imageBuffer, np.uint8), -1)
+imageBuffer = imageBuffer.split(',')[1]
+
+img = base64.b64decode(imageBuffer)
+img = np.frombuffer(img, dtype=np.uint8)
+
+img = cv2.imdecode(img, cv2.IMREAD_COLOR)
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img = cv2.resize(img, (414, 414))
 img = img/255.0
 img = torch.from_numpy(img).permute(2, 0, 1).type(torch.float32)
 
+
 model = get_object_detection_model(3)
-model.load_state_dict(torch.load('model', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load('/home/aaron/PushupCounter/PushUpShowDown/server/predictor/model', map_location=torch.device('cpu')))
 model.eval()
 
 predictions = model([img])
 
-print(predictions)
+print(predictions[0]['labels'][0].item())

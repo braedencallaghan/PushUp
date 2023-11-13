@@ -11,20 +11,25 @@ const db = client.db('PushUpShowdown');
 router.use(express.static("client"));
 
 router.post('/process-image', async (req, res) => {
-    // Handle POST request to /api/users here
-    const body = req.body;
-    const imageBuffer = Buffer.from(body.image, 'base64');
+    // // Handle POST request to /api/users here
+    // const body = req.body;
 
-    const pythonProcess = spawn('python',["../predictor/predictor.py", imageBuffer]);
+    // const pythonProcess = spawn('python',["./predictor/predictor.py", body.image]);
 
-    pythonProcess.stdout.on('data', async (data) => {
-      res.send(data.toString());
+    // pythonProcess.stdout.on('data', async (data) => {
+    //   console.log(data.toString());
+    //   res.json({class: data.toString()})
+    // })
+    const response = await fetch('http://localhost:8080/predictions/pushup-detector', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {data: req.body.image},
     })
-
-    pythonProcess.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
-    });
-});
+    const json = await response.json();
+    res.json(json);
+  })
 
 router.post('/register', async (req, res) => {
     const user = req.body;

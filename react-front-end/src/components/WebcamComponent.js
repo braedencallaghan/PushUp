@@ -15,19 +15,23 @@ async function handleSendToServer(img) {
 const WebcamComponent = ({ onCapture, setPushupState }) => {
   const webcamRef = useRef(null);
 
-  useEffect(async () => {
-    const interval = setInterval(() => {
+  useEffect(() => {
+    const interval = setInterval(async () => {
       if (webcamRef.current) {
         const imageSrc = webcamRef.current.getScreenshot();
         onCapture(imageSrc);
 
-        const res = handleSendToServer(imageSrc);
-        setPushupState(res.class);
+        try {
+          const res = await handleSendToServer(imageSrc);
+          setPushupState(res);
+        } catch (err) {
+          console.log(err);
+        }
       }
-    }, 200); // Capture every 200 milliseconds (5 times a second)
+    }, 1000); // Capture every 200 milliseconds (5 times a second)
 
     return () => clearInterval(interval);
-  }, [onCapture, setPushupState]);
+}, [onCapture, setPushupState]);
 
   return (
     <div>

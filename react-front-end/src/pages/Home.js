@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import WebcamComponent from '../components/WebcamComponent';
 import styles from '../styles/componentStyles.module.css';
 
-function Counter() {
-    const [count, setCount] = useState(0);
-    const [pushupState, setPushupState] = useState({})
-
+function Counter({ count, setCount }) {
     return (
         <div>
             <h1>counter: {count}</h1>
@@ -24,31 +21,21 @@ function Counter() {
     );
 }
 
-function State() {
-  const [pushupState, setPushupState] = useState({})
-  
+function State({ pushupState }) {
   return (
     <div>
-      <h1>State: {pushupState}</h1>
+      <h1>State: {JSON.stringify(pushupState)}</h1>
     </div>
   );
 }
 
 function Home(){
   const [capturedImage, setCapturedImage] = useState(null);
+  const [count, setCount] = useState(0);
+  const [pushupState, setPushupState] = useState({})
 
   const handleCapture = (imageSrc) => {
     setCapturedImage(imageSrc);
-  };
-
-  async function handleSendToServer() {
-    const res = await fetch('http://localhost:5000/process-image', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ image: capturedImage }),
-    })
   };
 
   return (
@@ -58,11 +45,11 @@ function Home(){
       {capturedImage && (
         <div>
           <img src={capturedImage} alt="Captured" />
-          <button onClick={handleSendToServer}>Send to Server</button>
+          {/* <button onClick={handleSendToServer}>Send to Server</button> */}
         </div>
       )}
-      <div className={styles['centered-element']}><Counter /></div>
-      <div className={styles['centered-element']}><State/></div>
+      <div className={styles['centered-element']}><Counter count={count} setCount={setCount} /></div>
+      <div className={styles['centered-element']}><State pushupState={pushupState} /></div>
     </div>
   );
 }
